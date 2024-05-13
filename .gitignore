@@ -1,0 +1,25 @@
+# Log fajlovi
+logs
+*.log
+npm-debug.log*
+
+# Direktorijumi zavisnosti
+node_modules/
+
+# Build direktorijumi
+/dist
+/build
+
+# Env fajlovi
+.env
+.env.local
+
+# OS generisani fajlovi
+.DS_Store
+Thumbs.db
+
+# Editori i IDE
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/
