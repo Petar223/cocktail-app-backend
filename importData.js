@@ -6,7 +6,7 @@ const { drinks, cocktails } = require("./data/drinks");
 
 const mongoUser = process.env.MONGO_ROOT_USER;
 const mongoPass = process.env.MONGO_ROOT_PASSWORD;
-const mongoHost = "localhost";
+const mongoHost = "mongo-db";
 const mongoPort = "27017";
 const mongoDB = "cocktailDB";
 
@@ -37,7 +37,7 @@ async function importData() {
       cocktail.ingredients = cocktail.ingredients.map((ingredient) => {
         return {
           ...ingredient,
-          drinkId: drinkMap.get(
+          _id: drinkMap.get(
             drinks.find((drink) => drink.id === ingredient.drinkId).name
           ), // Ensure correct mapping based on original drink id
         };

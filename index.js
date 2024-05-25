@@ -6,7 +6,7 @@ const cocktailsRouter = require("./routes/cocktails");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://your-other-domain.com",
@@ -14,7 +14,7 @@ const allowedOrigins = [
 
 const mongoUser = process.env.MONGO_ROOT_USER;
 const mongoPass = process.env.MONGO_ROOT_PASSWORD;
-const mongoHost = "localhost";
+const mongoHost = "mongo-db";
 const mongoPort = "27017";
 const mongoDB = "cocktailDB";
 

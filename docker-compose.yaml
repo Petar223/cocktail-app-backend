@@ -3,10 +3,13 @@ version: '3'
 services:
   mongo:
     image: mongo
+    container_name: mongo-db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=project
+    volumes:
+      - mongo-data:/data/db
     ports:
       - "27017:27017"
 
@@ -22,3 +25,24 @@ services:
       - mongo
     ports:
       - "8888:8081"
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: cocktail-app-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+
+networks:
+  default:
+    external:
+      name: cocktail-app-network
+
+volumes:
+  mongo-data:
+
+
+

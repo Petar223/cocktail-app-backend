@@ -2,11 +2,11 @@
 const mongoose = require("mongoose");
 
 const ingredientSchema = new mongoose.Schema({
-  drinkId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Drink",
-    required: false,
-  },
+  // drinkId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Drink",
+  //   required: false,
+  // },
   quantity: {
     type: Number,
     required: false,
