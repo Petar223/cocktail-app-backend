@@ -46,3 +46,5 @@ volumes:
 
 
 
+# For import data to mongoDb use this docker cmd
+#  docker run -ti --rm --net cocktail-app-network cocktail-app-backend-backend sh -c 'node importData.js';
