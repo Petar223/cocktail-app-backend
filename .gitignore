@@ -11,8 +11,8 @@ node_modules/
 /build
 
 # Env fajlovi
-.env
-.env.local
+# .env
+# .env.local
 
 # OS generisani fajlovi
 .DS_Store
