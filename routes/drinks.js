@@ -25,4 +25,36 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  const drink = new Drink({
+    name: req.body.name,
+    type: req.body.type,
+    alcoholic: req.body.alcoholic,
+    imageUrl: req.body.imageUrl,
+    desc: req.body.desc
+  });
+
+  try {
+    const newDrink = await drink.save();
+    res.status(201).json(newDrink);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const drink = await Drink.findById(req.params.id);
+    if (!drink) {
+      return res.status(404).json({ message: "Drink not found" });
+    }
+
+    await drink.remove();
+    res.json({ message: "Drink deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 module.exports = router;
