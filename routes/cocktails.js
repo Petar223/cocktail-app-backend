@@ -48,12 +48,10 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const cocktail = await Cocktail.findById(req.params.id);
+    const cocktail = await Cocktail.findByIdAndDelete(req.params.id);
     if (!cocktail) {
       return res.status(404).json({ message: "Cocktail not found" });
     }
-
-    await cocktail.remove();
     res.json({ message: "Cocktail deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });

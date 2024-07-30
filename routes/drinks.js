@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     type: req.body.type,
     alcoholic: req.body.alcoholic,
     imageUrl: req.body.imageUrl,
-    desc: req.body.desc
+    desc: req.body.desc,
   });
 
   try {
@@ -42,15 +42,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-
 router.delete("/:id", async (req, res) => {
   try {
-    const drink = await Drink.findById(req.params.id);
+    const drink = await Drink.findByIdAndDelete(req.params.id);
     if (!drink) {
       return res.status(404).json({ message: "Drink not found" });
     }
-
-    await drink.remove();
     res.json({ message: "Drink deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
