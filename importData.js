@@ -1,7 +1,9 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 const Drink = require("./models/drinks");
 const Cocktail = require("./models/cocktails");
+const User = require("./models/user");
 const { drinks, cocktails } = require("./data/drinks");
 
 const mongoUser = process.env.MONGO_ROOT_USER;
@@ -22,30 +24,50 @@ mongoose
 
 async function importData() {
   try {
-    // Clear previous data
+    
     await Drink.deleteMany({});
     await Cocktail.deleteMany({});
+    await User.deleteMany({});
 
-    // Insert new drinks and get their generated IDs
+    const users = [
+      {
+        username: "admin",
+        password: await bcrypt.hash("admin123", 10),
+        role: "admin",
+      },
+      {
+        username: "generalUser",
+        password: await bcrypt.hash("general123", 10),
+        role: "general",
+      },
+      {
+        username: "regularUser",
+        password: await bcrypt.hash("user123", 10),
+        role: "user",
+      },
+    ];
+
+    await User.insertMany(users);
+    console.log("Users added successfully");
+
+    
     const insertedDrinks = await Drink.insertMany(drinks);
     const drinkMap = new Map(
       insertedDrinks.map((drink) => [drink.name, drink._id])
     );
 
-    // Update cocktail ingredients to reference these new IDs
     const updatedCocktails = cocktails.map((cocktail) => {
       cocktail.ingredients = cocktail.ingredients.map((ingredient) => {
         return {
           ...ingredient,
           _id: drinkMap.get(
             drinks.find((drink) => drink.id === ingredient.drinkId).name
-          ), // Ensure correct mapping based on original drink id
+          ),
         };
       });
       return cocktail;
     });
 
-    // Insert updated cocktails
     await Cocktail.insertMany(updatedCocktails);
 
     console.log("Data imported successfully");

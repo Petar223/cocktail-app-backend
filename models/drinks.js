@@ -1,4 +1,3 @@
-// models/Drink.js
 const mongoose = require("mongoose");
 
 const drinkSchema = new mongoose.Schema({
@@ -21,6 +20,10 @@ const drinkSchema = new mongoose.Schema({
   desc: {
     type: String,
     required: false,
+  },
+  isFavorite: {
+    type: Boolean,
+    default: false,
   },
 });
 
