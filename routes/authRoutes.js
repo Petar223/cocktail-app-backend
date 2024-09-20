@@ -8,6 +8,11 @@ router.post("/register", authController.register);
 
 router.post("/login", authController.login);
 
+router.post("/logout", authMiddleware.verifyToken, (req, res) => {
+  const token = req.headers["authorization"].split(" ")[1];
+  res.status(200).json({ message: "Logout successful" });
+});
+
 router.get("/verifyToken", (req, res) => {
   const token = req.headers["authorization"];
 

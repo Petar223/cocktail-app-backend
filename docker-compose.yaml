@@ -26,6 +26,14 @@ services:
     ports:
       - "8888:8081"
 
+  # redis:
+  #   image: redis:alpine
+  #   container_name: redis-server
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - default
+
   backend:
     build:
       context: .
@@ -43,8 +51,7 @@ networks:
 
 volumes:
   mongo-data:
+    # redis-data:
 
-
-
-# For import data to mongoDb use this docker cmd
-#  docker run -ti --rm --net cocktail-app-network cocktail-app-backend-backend sh -c 'node importData.js';
+    # For import data to mongoDb use this docker cmd
+    #  docker run -ti --rm --net cocktail-app-network cocktail-app-backend-backend sh -c 'node importData.js';

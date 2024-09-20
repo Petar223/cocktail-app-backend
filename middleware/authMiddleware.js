@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// Middleware za proveru JWT tokena (bez Redis-a)
 exports.verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
@@ -17,6 +18,8 @@ exports.verifyToken = (req, res, next) => {
     next();
   });
 };
+
+exports.blacklistToken = (token, expiresIn) => {};
 
 exports.hasRole = (requiredRole) => (req, res, next) => {
   const rolesHierarchy = {

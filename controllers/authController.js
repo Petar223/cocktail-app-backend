@@ -1,9 +1,15 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
 
 exports.register = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { username, password, role } = req.body;
 
     const existingUser = await User.findOne({ username });
@@ -11,8 +17,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({ username, password: hashedPassword, role });
     await user.save();
@@ -25,22 +30,25 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    console.log("Login request body:", req.body);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
     if (!user) {
-      console.log("User not found");
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res
+        .status(401)
+        .json({ message: "Invalid username or password", status: 401 });
     }
-
-    console.log("User found:", user);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log("Password mismatch");
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res
+        .status(401)
+        .json({ message: "Invalid username or password", status: 401 });
     }
 
     const token = jwt.sign(
@@ -51,11 +59,17 @@ exports.login = async (req, res) => {
       }
     );
 
-    console.log("Token generated:", token);
-
-    res.status(200).json({ token });
+    return res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+        role: user.role,
+      },
+      expiresIn: 3600,
+    });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error" });
   }
 };
