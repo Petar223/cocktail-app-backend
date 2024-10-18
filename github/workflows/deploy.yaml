@@ -1,0 +1,31 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18-alpine'
+
+    - name: Build and deploy with Docker Compose
+      run: |
+        docker-compose -f docker-compose.prod.yaml up --build -d
+      env:
+        NODE_ENV: production
+        MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}
+        MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}
+        MONGO_HOST: ${{ secrets.MONGO_HOST }}
+        MONGO_PORT: ${{ secrets.MONGO_PORT }}
+        MONGO_DB: ${{ secrets.MONGO_DB }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}

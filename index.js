@@ -1,4 +1,7 @@
-require("dotenv").config();
+const env = process.env.NODE_ENV || 'development';
+if (env === 'development') {
+  require("dotenv").config({ path: `.env.${env}` });
+}
 const express = require("express");
 const mongoose = require("mongoose");
 const drinksRouter = require("./routes/drinks");
@@ -7,7 +10,7 @@ const authRouter = require("./routes/authRoutes");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT;
+ORT = process.env.PORT || 3000;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://your-other-domain.com",
@@ -15,9 +18,14 @@ const allowedOrigins = [
 
 const mongoUser = process.env.MONGO_ROOT_USER;
 const mongoPass = process.env.MONGO_ROOT_PASSWORD;
-const mongoHost = "mongo-db";
-const mongoPort = "27017";
-const mongoDB = "cocktailDB";
+const mongoHost = process.env.MONGO_HOST;
+const mongoPort = process.env.MONGO_PORT;
+const mongoDB = process.env.MONGO_DB;
+
+console.log("MongoDB User:", process.env.MONGO_ROOT_USER);
+console.log("MongoDB Password:", process.env.MONGO_ROOT_PASSWORD);
+console.log("MongoDB Host:", process.env.MONGO_HOST);
+console.log("MongoDB Port:", process.env.MONGO_PORT);
 
 const MONGODB_URI = `mongodb://${mongoUser}:${mongoPass}@${mongoHost}:${mongoPort}`;
 
@@ -32,7 +40,11 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-mongoose.connect(MONGODB_URI, { dbName: mongoDB });
+mongoose.connect(MONGODB_URI, {
+  dbName: mongoDB,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use("/drinks", drinksRouter);
 app.use("/cocktails", cocktailsRouter);
