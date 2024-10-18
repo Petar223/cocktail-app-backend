@@ -11,8 +11,9 @@ node_modules/
 /build
 
 # Env fajlovi
-.env*
-# .env
+# .env*
+.env.development
+.env.production
 # .env.local
 
 # OS generisani fajlovi
