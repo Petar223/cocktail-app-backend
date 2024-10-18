@@ -22,11 +22,6 @@ const mongoHost = process.env.MONGO_HOST;
 const mongoPort = process.env.MONGO_PORT;
 const mongoDB = process.env.MONGO_DB;
 
-console.log("MongoDB User:", process.env.MONGO_ROOT_USER);
-console.log("MongoDB Password:", process.env.MONGO_ROOT_PASSWORD);
-console.log("MongoDB Host:", process.env.MONGO_HOST);
-console.log("MongoDB Port:", process.env.MONGO_PORT);
-
 const MONGODB_URI = `mongodb://${mongoUser}:${mongoPass}@${mongoHost}:${mongoPort}`;
 
 const corsOptions = {
