@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "18-alpine"
+          node-version: "20.11.1"
 
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.5.3
