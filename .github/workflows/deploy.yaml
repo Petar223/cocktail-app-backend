@@ -25,6 +25,7 @@ jobs:
 
       - name: Log environment variables
         run: |
+          echo "PORT": ${{ secrets.PORT }}
           echo "MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}"
           echo "MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}"
           echo "MONGO_HOST: ${{ secrets.MONGO_HOST }}"
