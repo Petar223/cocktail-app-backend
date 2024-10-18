@@ -16,6 +16,10 @@ services:
       context: .
       dockerfile: ./Dockerfile
     container_name: cocktail-app-backend
+    ports:
+      - "80:5000"
+    depends_on:
+      - mongo
     environment:
       - PORT=${PORT}
       - MONGO_ROOT_USER=${MONGO_ROOT_USER}
@@ -24,10 +28,6 @@ services:
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_DB=${MONGO_DB}
       - JWT_SECRET=${JWT_SECRET}
-    ports:
-      - "80:5000"
-    depends_on:
-      - mongo
 
 networks:
   default:
