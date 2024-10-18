@@ -18,6 +18,15 @@ jobs:
       with:
         node-version: '18-alpine'
 
+    - name: Add SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml up --build -d'
+
     - name: Build and deploy with Docker Compose
       run: |
         docker-compose -f docker-compose.prod.yaml up --build -d
