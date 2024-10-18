@@ -19,16 +19,27 @@ jobs:
           node-version: "20.x"
 
       - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Log environment variables
+        run: |
+          echo "MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}"
+          echo "MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}"
+          echo "MONGO_HOST: ${{ secrets.MONGO_HOST }}"
+          echo "MONGO_PORT: ${{ secrets.MONGO_PORT }}"
+          echo "MONGO_DB: ${{ secrets.MONGO_DB }}"
+          echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}"
+
+      - name: Create Docker Network (if not exists)
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'docker network create cocktail-app-network || true'
+
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml up --build -d'
-
+          ssh -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml up --build -d'
         env:
-          NODE_ENV: production
           MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}
           MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}
           MONGO_HOST: ${{ secrets.MONGO_HOST }}
