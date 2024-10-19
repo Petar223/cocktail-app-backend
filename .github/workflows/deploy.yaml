@@ -39,13 +39,10 @@ jobs:
 
       - name: Create .env file on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}" > /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}" >> /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> /home/ubuntu/cocktail-app-backend/.env'
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "PORT=${{ secrets.PORT }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 '
+          printf "MONGO_ROOT_USER=%s\nMONGO_ROOT_PASSWORD=%s\nMONGO_HOST=%s\nMONGO_PORT=%s\nMONGO_DB=%s\nJWT_SECRET=%s\nPORT=%s\n" \
+          "${{ secrets.MONGO_ROOT_USER }}" "${{ secrets.MONGO_ROOT_PASSWORD }}" "${{ secrets.MONGO_HOST }}" "${{ secrets.MONGO_PORT }}" "${{ secrets.MONGO_DB }}" "${{ secrets.JWT_SECRET }}" "${{ secrets.PORT }}" \
+          > /home/ubuntu/cocktail-app-backend/.env'
 
       - name: Deploy to EC2
         run: |
