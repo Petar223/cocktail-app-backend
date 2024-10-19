@@ -1,8 +1,8 @@
-const env = process.env.NODE_ENV || "development";
+// const env = process.env.NODE_ENV || "development";
 
-if (env === "development") {
-  require("dotenv").config({ path: `.env.${env}` });
-}
+// if (env === "development") {
+//   require("dotenv").config({ path: `.env.${env}` });
+// }
 const express = require("express");
 const mongoose = require("mongoose");
 const drinksRouter = require("./routes/drinks");

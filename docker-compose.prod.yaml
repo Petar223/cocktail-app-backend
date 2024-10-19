@@ -21,13 +21,13 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_ROOT_USER=$MONGO_ROOT_USER
-      - MONGO_ROOT_PASSWORD=$MONGO_ROOT_PASSWORD
-      - MONGO_HOST=$MONGO_HOST
-      - MONGO_PORT=$MONGO_PORT
-      - MONGO_DB=$MONGO_DB
-      - JWT_SECRET=$JWT_SECRET
-      - PORT=$PORT
+      - MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
 
 networks:
   default:
