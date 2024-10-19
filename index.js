@@ -1,5 +1,6 @@
-const env = process.env.NODE_ENV || 'development';
-if (env === 'development') {
+const env = process.env.NODE_ENV || "development";
+
+if (env === "development") {
   require("dotenv").config({ path: `.env.${env}` });
 }
 const express = require("express");
@@ -15,7 +16,6 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://your-other-domain.com",
 ];
-
 const mongoUser = process.env.MONGO_ROOT_USER;
 const mongoPass = process.env.MONGO_ROOT_PASSWORD;
 const mongoHost = process.env.MONGO_HOST;
