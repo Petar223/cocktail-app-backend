@@ -39,13 +39,13 @@ jobs:
 
       - name: Deploy to EC2
         env:
-            MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}
-            MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}
-            MONGO_HOST=${{ secrets.MONGO_HOST }}
-            MONGO_PORT=${{ secrets.MONGO_PORT }}
-            MONGO_DB=${{ secrets.MONGO_DB }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            PORT=${{ secrets.PORT }}
+          MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}
+          MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}
+          MONGO_HOST: ${{ secrets.MONGO_HOST }}
+          MONGO_PORT: ${{ secrets.MONGO_PORT }}
+          MONGO_DB: ${{ secrets.MONGO_DB }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml up --build -d'
         
