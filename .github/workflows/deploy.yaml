@@ -32,16 +32,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Log environment variables
-        run: |
-          echo "PORT": ${{ secrets.PORT }}
-          echo "MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}"
-          echo "MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}"
-          echo "MONGO_HOST: ${{ secrets.MONGO_HOST }}"
-          echo "MONGO_PORT: ${{ secrets.MONGO_PORT }}"
-          echo "MONGO_DB: ${{ secrets.MONGO_DB }}"
-          echo "JWT_SECRET: ${{ secrets.JWT_SECRET }}"
-
       - name: Create Docker Network (if not exists)
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'docker network create cocktail-app-network || true'
