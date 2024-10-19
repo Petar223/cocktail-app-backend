@@ -25,7 +25,7 @@ jobs:
 
       - name: Log environment variables
         run: |
-          echo "PORT": ${{ secrets.PORT }}
+          echo "PORT: ${{ secrets.PORT }}"
           echo "MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}"
           echo "MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}"
           echo "MONGO_HOST: ${{ secrets.MONGO_HOST }}"
@@ -37,15 +37,16 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'docker network create cocktail-app-network || true'
 
-      - name: Deploy to EC2
-        env:
-          MONGO_ROOT_USER: ${{ secrets.MONGO_ROOT_USER }}
-          MONGO_ROOT_PASSWORD: ${{ secrets.MONGO_ROOT_PASSWORD }}
-          MONGO_HOST: ${{ secrets.MONGO_HOST }}
-          MONGO_PORT: ${{ secrets.MONGO_PORT }}
-          MONGO_DB: ${{ secrets.MONGO_DB }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PORT: ${{ secrets.PORT }}
+      - name: Create .env file on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml up --build -d'
-        
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}" > /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> /home/ubuntu/cocktail-app-backend/.env'
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'echo "PORT=${{ secrets.PORT }}" >> /home/ubuntu/cocktail-app-backend/.env'
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'cd /home/ubuntu/cocktail-app-backend && docker-compose -f docker-compose.prod.yaml --env-file .env up --build -d'
