@@ -40,9 +40,15 @@ jobs:
       - name: Create .env file on EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 '
-          printf "MONGO_ROOT_USER=%s\nMONGO_ROOT_PASSWORD=%s\nMONGO_HOST=%s\nMONGO_PORT=%s\nMONGO_DB=%s\nJWT_SECRET=%s\nPORT=%s\n" \
-          "${{ secrets.MONGO_ROOT_USER }}" "${{ secrets.MONGO_ROOT_PASSWORD }}" "${{ secrets.MONGO_HOST }}" "${{ secrets.MONGO_PORT }}" "${{ secrets.MONGO_DB }}" "${{ secrets.JWT_SECRET }}" "${{ secrets.PORT }}" \
-          > /home/ubuntu/cocktail-app-backend/.env'
+          cat <<EOF > /home/ubuntu/cocktail-app-backend/.env
+          MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}
+          MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}
+          MONGO_HOST=${{ secrets.MONGO_HOST }}
+          MONGO_PORT=${{ secrets.MONGO_PORT }}
+          MONGO_DB=${{ secrets.MONGO_DB }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          PORT=${{ secrets.PORT }}
+          EOF'
 
       - name: Deploy to EC2
         run: |
