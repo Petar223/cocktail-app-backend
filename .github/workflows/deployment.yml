@@ -18,20 +18,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set environment variables
-        run: |
-          echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}" >> ~/.ssh/environment
-          echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}" >> ~/.ssh/environment
-          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> ~/.ssh/environment
-          echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> ~/.ssh/environment
-          echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> ~/.ssh/environment
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ~/.ssh/environment
-          echo "PORT=${{secrets.PORT}}" >> ~/.ssh/environment
-
-      - name: Debug
-        run: |
-          cat ~/.ssh/environment
-
       - name: Deploy application
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'bash -s' < ./.github/workflows/deploy.sh
