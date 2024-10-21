@@ -25,7 +25,8 @@ jobs:
         echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> $GITHUB_ENV
         echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> $GITHUB_ENV
         echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> $GITHUB_ENV
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV    
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
+        echo "PORT=${{secrets.PORT}}" >> $GITHUB_ENV    
 
     - name: Deploy application
       run: |

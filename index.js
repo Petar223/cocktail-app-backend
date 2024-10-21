@@ -12,7 +12,7 @@ const authRouter = require("./routes/authRoutes");
 const cors = require("cors");
 
 const app = express();
-ORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://your-other-domain.com",
