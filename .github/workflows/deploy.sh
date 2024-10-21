@@ -16,3 +16,4 @@ docker-compose -f docker-compose.prod.yaml up --build -d
 docker image prune -f
 
 echo "Deployment completed!"
+echo "PORT: " $PORT

@@ -20,13 +20,13 @@ jobs:
     
     - name: Set environment variables
       run: |
-        echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}" >> $GITHUB_ENV
-        echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}" >> $GITHUB_ENV
-        echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> $GITHUB_ENV
-        echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> $GITHUB_ENV
-        echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> $GITHUB_ENV
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> $GITHUB_ENV
-        echo "PORT=${{secrets.PORT}}" >> $GITHUB_ENV    
+        echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}"
+        echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}"
+        echo "MONGO_HOST=${{ secrets.MONGO_HOST }}"
+        echo "MONGO_PORT=${{ secrets.MONGO_PORT }}"
+        echo "MONGO_DB=${{ secrets.MONGO_DB }}" >>
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
+        echo "PORT=${{secrets.PORT}}"  
 
     - name: Deploy application
       run: |

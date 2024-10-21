@@ -20,6 +20,12 @@ services:
       - "80:5000"
     depends_on:
       - mongo
+    environment:
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+      - MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      - MONGO_ROOT_PASSWOR=${MONGO_ROOT_PASSWOR}
 
 networks:
   default:
