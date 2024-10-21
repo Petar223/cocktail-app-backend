@@ -26,7 +26,9 @@ services:
       - MONGO_DB=${MONGO_DB}
       - MONGO_ROOT_USER=${MONGO_ROOT_USER}
       - MONGO_ROOT_PASSWOR=${MONGO_ROOT_PASSWOR}
-
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      
 networks:
   default:
     external:

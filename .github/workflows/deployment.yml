@@ -10,24 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Add SSH key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    
-    - name: Set environment variables
-      run: |
-        echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}"
-        echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}"
-        echo "MONGO_HOST=${{ secrets.MONGO_HOST }}"
-        echo "MONGO_PORT=${{ secrets.MONGO_PORT }}"
-        echo "MONGO_DB=${{ secrets.MONGO_DB }}"
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
-        echo "PORT=${{secrets.PORT}}"  
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Deploy application
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'bash -s' < ./.github/workflows/deploy.sh
+      - name: Set environment variables
+        run: |
+          echo "MONGO_ROOT_USER=${{ secrets.MONGO_ROOT_USER }}" >> ~/.ssh/environment
+          echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}" >> ~/.ssh/environment
+          echo "MONGO_HOST=${{ secrets.MONGO_HOST }}" >> ~/.ssh/environment
+          echo "MONGO_PORT=${{ secrets.MONGO_PORT }}" >> ~/.ssh/environment
+          echo "MONGO_DB=${{ secrets.MONGO_DB }}" >> ~/.ssh/environment
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ~/.ssh/environment
+          echo "PORT=${{secrets.PORT}}" >> ~/.ssh/environment
+
+      - name: Deploy application
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'bash -s' < ./.github/workflows/deploy.sh
