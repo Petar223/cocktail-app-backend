@@ -28,6 +28,10 @@ jobs:
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ~/.ssh/environment
           echo "PORT=${{secrets.PORT}}" >> ~/.ssh/environment
 
+      - name: Debug
+        run: |
+          echo ~/.ssh/environment
+
       - name: Deploy application
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@16.171.1.236 'bash -s' < ./.github/workflows/deploy.sh
