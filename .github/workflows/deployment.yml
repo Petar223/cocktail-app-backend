@@ -24,7 +24,7 @@ jobs:
         echo "MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}"
         echo "MONGO_HOST=${{ secrets.MONGO_HOST }}"
         echo "MONGO_PORT=${{ secrets.MONGO_PORT }}"
-        echo "MONGO_DB=${{ secrets.MONGO_DB }}" >>
+        echo "MONGO_DB=${{ secrets.MONGO_DB }}"
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
         echo "PORT=${{secrets.PORT}}"  
 
