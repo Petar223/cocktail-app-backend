@@ -30,7 +30,7 @@ jobs:
 
       - name: Debug
         run: |
-          echo ~/.ssh/environment
+          cat ~/.ssh/environment
 
       - name: Deploy application
         run: |
