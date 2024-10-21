@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source .env
 # Navigiraj do foldera aplikacije
 cd /home/ubuntu/cocktail-app-backend
 
