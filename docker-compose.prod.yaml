@@ -28,7 +28,7 @@ services:
       - MONGO_PORT=${MONGO_PORT}
       - MONGO_DB=${MONGO_DB}
       - JWT_SECRET=${JWT_SECRET}
-      - PROD=${PROD}
+      - PORT=${PORT}
 
 networks:
   default:
