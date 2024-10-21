@@ -10,7 +10,7 @@ git pull origin master
 
 # Builduj i restartuj Docker kontejnere
 echo "Building Docker containers..."
-docker-compose -f docker-compose.prod.yml up --build -d
+docker-compose -f docker-compose.prod.yaml up --build -d
 
 # Opcionalno: Čišćenje starih Docker slika (ako koristiš image verzije)
 docker image prune -f
