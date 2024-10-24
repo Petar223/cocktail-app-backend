@@ -1,13 +1,14 @@
 version: '3'
 
 services:
+
   mongo:
     image: mongo
     container_name: mongo-db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=project
+      - MONGO_INITDB_DATABASE=cocktailDB
     volumes:
       - mongo-data:/data/db
     ports:
@@ -26,14 +27,6 @@ services:
     ports:
       - "8888:8081"
 
-  # redis:
-  #   image: redis:alpine
-  #   container_name: redis-server
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - default
-
   backend:
     build:
       context: .
@@ -43,15 +36,22 @@ services:
       - "5000:5000"
     depends_on:
       - mongo
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGO_ROOT_USER=${MONGO_ROOT_USER}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_PORT=${MONGO_PORT}
+      - MONGO_DB=${MONGO_DB}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
 
 networks:
   default:
-    external:
-      name: cocktail-app-network
+    name: cocktail-app-network
 
 volumes:
   mongo-data:
-    # redis-data:
 
     # For import data to mongoDb use this docker cmd
     #  docker run -ti --rm --net cocktail-app-network cocktail-app-backend-backend sh -c 'node importData.js';

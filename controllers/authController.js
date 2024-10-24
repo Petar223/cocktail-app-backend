@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 
 exports.register = async (req, res) => {
@@ -10,21 +10,29 @@ exports.register = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, password, role } = req.body;
+    const { username, email, password, role } = req.body;
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res
+        .status(400)
+        .json({ message: "User with this username or email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const assignedRole = role || "user";
 
-    const user = new User({ username, password: hashedPassword, role });
+    const user = new User({
+      username: username.trim(),
+      email: email.trim(),
+      password: password.trim(),
+      role: assignedRole,
+    });
     await user.save();
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error during registration" });
   }
 };
 
@@ -37,14 +45,15 @@ exports.login = async (req, res) => {
 
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: username.trim() });
     if (!user) {
       return res
         .status(401)
         .json({ message: "Invalid username or password", status: 401 });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password.trim(), user.password);
+
     if (!isMatch) {
       return res
         .status(401)
@@ -70,6 +79,51 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error during login" });
+  }
+};
+
+exports.logout = (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(403).json({ message: "No token provided!" });
+    }
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Server error during logout" });
+  }
+};
+
+exports.verifyToken = (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(403).json({ message: "No token provided!" });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res
+          .status(403)
+          .json({ message: "Failed to authenticate token." });
+      }
+
+      res.status(200).json({
+        valid: true,
+        role: decoded.role,
+      });
+    });
+  } catch (error) {
+    console.error("Token verification error:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error during token verification" });
   }
 };

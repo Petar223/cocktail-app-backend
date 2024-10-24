@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-// Middleware za proveru JWT tokena (bez Redis-a)
 exports.verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {

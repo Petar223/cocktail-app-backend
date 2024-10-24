@@ -33,14 +33,23 @@ const corsOptions = {
       callback(new Error("CORS not allowed"));
     }
   },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-mongoose.connect(MONGODB_URI, {
-  dbName: mongoDB,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(MONGODB_URI, {
+    dbName: mongoDB,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 app.use("/drinks", drinksRouter);
 app.use("/cocktails", cocktailsRouter);
