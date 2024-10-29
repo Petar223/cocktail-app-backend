@@ -3,19 +3,17 @@ const Cocktail = require("../models/cocktails");
 
 const addFavorite = async (req, res) => {
   try {
-    // Pronađi favorite korisnika ili kreiraj novi dokument ako ne postoji
     let favorite = await Favorite.findOne({ userId: req.userId });
     if (!favorite) {
       favorite = new Favorite({ userId: req.userId, cocktails: [] });
     }
 
-    // Pronađi koktel na osnovu `cocktailId`
+  
     const cocktail = await Cocktail.findById(req.body.cocktailId);
     if (!cocktail) {
       return res.status(404).json({ message: "Cocktail not found" });
     }
 
-    // Dodaj ceo koktel objekat u niz `cocktails`, ali prvo proveri da li već postoji
     const alreadyFavorited = favorite.cocktails.some(
       (favCocktail) => favCocktail._id.toString() === cocktail._id.toString()
     );
@@ -35,7 +33,6 @@ const addFavorite = async (req, res) => {
 const getFavorites = async (req, res) => {
   console.log("User:", req.userId);
   try {
-    // Koristimo `populate` da zamenimo `cocktailId` sa celim koktel objektom
     const favorites = await Favorite.findOne({ userId: req.userId }).populate(
       "cocktails"
     );

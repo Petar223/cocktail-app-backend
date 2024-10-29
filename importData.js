@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const Drink = require("./models/drinks");
 const Cocktail = require("./models/cocktails");
 const User = require("./models/user");
-const Favorite = require("./models/favorites"); // Import Favorites modela
+const Favorite = require("./models/favorites");
 const { drinks, cocktails } = require("./data/drinks");
 
 const mongoUser = process.env.MONGO_ROOT_USER;
@@ -29,7 +29,7 @@ async function importData() {
     await Drink.deleteMany({});
     await Cocktail.deleteMany({});
     await User.deleteMany({});
-    await Favorite.deleteMany({}); // Brisanje starih favorites dokumenata
+    await Favorite.deleteMany({});
 
     const users = [
       {
@@ -49,11 +49,9 @@ async function importData() {
       },
     ];
 
-    // Dodaj korisnike u bazu i vrati umetnute korisnike
     const insertedUsers = await User.insertMany(users);
     console.log("Users added successfully");
 
-    // Kreiraj favorites dokumente za svakog umetnutog korisnika
     const favoritesData = insertedUsers.map((user) => ({
       userId: user._id,
       cocktails: [],
@@ -61,13 +59,11 @@ async function importData() {
     await Favorite.insertMany(favoritesData);
     console.log("Favorites added successfully");
 
-    // Umetanje drinks podataka
     const insertedDrinks = await Drink.insertMany(drinks);
     const drinkMap = new Map(
       insertedDrinks.map((drink) => [drink.name, drink._id])
     );
 
-    // Mapiranje koktela sa odgovarajućim ingredientima
     const updatedCocktails = cocktails.map((cocktail) => {
       cocktail.ingredients = cocktail.ingredients.map((ingredient) => {
         return {
