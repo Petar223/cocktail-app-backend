@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const { drinks, cocktails } = require("../data/drinks");
+const Favorite = require("../models/favorites");
 
 exports.register = async (req, res) => {
   try {
@@ -28,6 +30,13 @@ exports.register = async (req, res) => {
       role: assignedRole,
     });
     await user.save();
+
+    const newFavorites = new Favorite({
+      userId: user._id,
+      cocktails: [],
+    });
+
+    await newFavorites.save();
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {

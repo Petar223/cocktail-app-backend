@@ -12,6 +12,7 @@ exports.verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: "Unauthorized!" });
     }
+    console.log("decoded: ", decoded);
     req.userId = decoded.id;
     req.userRole = decoded.role;
     next();

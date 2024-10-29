@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const drinksRouter = require("./routes/drinks");
 const cocktailsRouter = require("./routes/cocktails");
 const authRouter = require("./routes/authRoutes");
+const favoriteRouter = require("./routes/favorites");
 const cors = require("cors");
 
 const app = express();
@@ -54,6 +55,7 @@ mongoose
 app.use("/drinks", drinksRouter);
 app.use("/cocktails", cocktailsRouter);
 app.use("/auth", authRouter);
+app.use("/favorites", favoriteRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
